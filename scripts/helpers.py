@@ -12,6 +12,6 @@ def timer(method):
         duration = end_time - start_time
         duration = round(duration, 1)
         method_name = method.__name__
-        print(f"(TIMER) method '{method_name}' duration: {duration} sec")
+        print(f"[TIMER] '{method_name}' method duration: {duration} sec")
         return output
     return wrap

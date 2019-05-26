@@ -26,7 +26,7 @@ def main():
     parser.add_argument('-d', '--dirpath', default=DATASETS_DIRPATH, help="dataset directory path")
     parser.add_argument('-n', '--n_train', default=None, type=int, help="number of rows to download on the train dataset")
     parser.add_argument('-t', '--n_test', default=None, type=int, help="number of rows to download on the test dataset")
-    parser.add_argument('-e', "--epochs", default=1, type=int, help="set the number of epochs")
+    parser.add_argument('-e', "--epochs", default=3, type=int, help="set the number of epochs")
     parser.add_argument('-b', "--batch_size", default=86, type=int, help="set batch size")
     cli = parser.parse_args()
 

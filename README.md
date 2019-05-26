@@ -32,3 +32,6 @@ python main.py
   
 **-b (--batch_size)**
 > Batch size, default to 86
+
+## Sumbmissions
+Create a submissions file in the `submissions/` directory.

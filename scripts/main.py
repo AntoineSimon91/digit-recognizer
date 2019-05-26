@@ -1,26 +1,31 @@
 
+#standard imports
+import argparse
+
 # local imports
 from data_formatter import DataSet
 
 
 def main():
+    cli_parser = argparse.ArgumentParser()
+    cli_parser.add_argument('-n', '--nrows', default=None, type=int, help="number of rows to download")
+    cli_arguments = cli_parser.parse_args()
+    nrows = cli_arguments.nrows
 
     test = DataSet("test.csv")
-    test.download()
-    test.normalize(max_value=255.)
-    test.reshape(matrix_shape=(-1, 28, 28, 1))
+    test.download(nrows=nrows)
+    test.set_X()
+    test.normalize()
+    test.reshape()
 
     train = DataSet("train.csv")
-    train.download(nrows=100)
+    train.download(nrows=nrows)
     train.split_X_Y()
-    train.normalize(max_value=255.)
-    train.reshape(matrix_shape=(-1, 28, 28, 1))
+    train.normalize()
+    train.reshape()
     train.convert_digits_to_one_hot_vectors()
     
-    validation = train.extract_validation(
-        random_seed=2,
-        validation_size=0.1
-    )
+    validation = train.extract_validation(size=0.1)
 
     
     print(train)

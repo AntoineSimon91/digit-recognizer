@@ -15,6 +15,11 @@ from sklearn.model_selection import train_test_split
 from helpers import timer
 
 
+def convert_one_hot_vectors_to_digits(array):
+    max_probability_inidices = np.argmax(array, axis=1)
+    return max_probability_inidices  
+
+
 class DataSet:
     def __init__(self, dirpath=None, filename=None):
 
@@ -23,7 +28,6 @@ class DataSet:
 
         self.X = pd.DataFrame()
         self.Y = pd.DataFrame()
-        self.labels_type = "digits"
 
     def __repr__(self):
         dataset_name = str(inspect.stack()[1][4]).split('(')[1].split(')')[0]
@@ -77,14 +81,11 @@ class DataSet:
             `4 -> [0,0,0,1,0,0,0,0,0,0,0]`
         """
         print("convert digit labels to one hot vectors")
-        assert self.labels_type == "digits"
         self.Y = to_categorical(self.Y, num_classes=num_classes)
-        self.labels_type = "one_hot"
 
     def convert_one_hot_vectors_to_digits(self):
-        assert self.labels_type == "one_hot"
-        self.Y = np.argmax(self.Y, axis=1)
-        self.labels_type = "digits"
+        self.Y = convert_one_hot_vectors_to_digits(self.Y) 
+        
 
     def extract_validation(self, size=0.1, random_seed=2):
         """split train and validation dataset"""

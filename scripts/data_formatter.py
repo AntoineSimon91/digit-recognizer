@@ -34,19 +34,20 @@ class DataSet:
 
     def __repr__(self):
         dataset_name = str(inspect.stack()[1][4]).split('(')[1].split(')')[0]
-        object_repr = f"\n{dataset_name.capitalize()} dataset:\n"
+        object_repr = f"\n{dataset_name.upper()} dataset:\n"
         object_repr += f"  source   | {self.filename}\n"
         object_repr += f"  X.shape  | {self.X.shape}\n"
         object_repr += f"  Y.shape  | {self.Y.shape}"
         return object_repr
 
+    @timer
     def download(self, nrows=None):
         """Download csv file to pandas dataframe"""
         
         if nrows:
-            print(f"download {nrows} first rows of '{self.filename}' dataset ...")
+            print(f"\ndownload {nrows} first rows of '{self.filename}' dataset ...")
         else:
-            print(f"download '{self.filename}' dataset ...")
+            print(f"\ndownload '{self.filename}' dataset ...")
 
         filepath = join(self.dirpath, self.filename)
         df = pd.read_csv(filepath, nrows=nrows)
@@ -92,6 +93,19 @@ class DataSet:
         self.Y = np.argmax(self.Y, axis=1)
         self.labels_type = "digits"
 
+    def extract_validation(self, size=0.1, random_seed=2):
+        """split train and validation dataset"""
+        print("extract validation dataset from train dataset")
+        validation = DataSet()
+        validation.filename = self.filename
+        split = train_test_split(self.X, self.Y, test_size=size, random_state=random_seed)
+        self.X = split[0]
+        validation.X = split[1]
+        self.Y = split[2]
+        validation.Y = split[3]
+
+        return validation
+
     def plot_digit(self, index=None):
         """
         Plot digit
@@ -117,14 +131,3 @@ class DataSet:
 
         if undo_labeling:
             self.convert_digits_to_one_hot_vectors()
-
-    def extract_validation(self, size=0.1, random_seed=2):
-        validation = DataSet()
-        validation.filename = self.filename
-        split = train_test_split(self.X, self.Y, test_size=size, random_state=random_seed)
-        self.X = split[0]
-        validation.X = split[1]
-        self.Y = split[2]
-        validation.Y = split[3]
-
-        return validation

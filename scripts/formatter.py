@@ -1,7 +1,6 @@
 
 # standard imports
-import os
-from os.path import abspath, dirname, join, pardir
+from os.path import join
 import inspect
 import random
 
@@ -15,15 +14,9 @@ from sklearn.model_selection import train_test_split
 # local imports
 from helpers import timer
 
-    
-PARENT_DIRPATH = abspath(join(dirname(__file__), pardir))    
-DATASETS_DIRPATH = join(PARENT_DIRPATH, "datasets")
-
 
 class DataSet:
-    def __init__(self, filename=None, dirpath=DATASETS_DIRPATH):
-        if not os.path.exists(dirpath):
-            raise AttributeError(f"'{dirpath} does not exists'")
+    def __init__(self, dirpath=None, filename=None):
 
         self.dirpath = dirpath
         self.filename = filename

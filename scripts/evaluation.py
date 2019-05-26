@@ -7,8 +7,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
-
 def plot_loss_and_accuracy(history, display=True):
     fontsize = 14
     fig = plt.figure(figsize=(12, 9))

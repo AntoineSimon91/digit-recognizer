@@ -4,9 +4,6 @@
 ## Competition Description
 MNIST ("Modified National Institute of Standards and Technology") is the  classic dataset of handwritten images has served as the basis for benchmarking classification algorithms. In this competition, the goal is to correctly identify digits from a dataset of tens of thousands of handwritten images. 
 
-## Sources
-https://www.kaggle.com/yassineghouzam/introduction-to-cnn-keras-0-997-top-6
-
 ## Setup
 ```pip install -r requirements.txt```
 
@@ -14,7 +11,7 @@ https://www.kaggle.com/yassineghouzam/introduction-to-cnn-keras-0-997-top-6
 
 ```
 cd scripts
-python main.py
+python main.p
 ```
 
 ## Command Line Interface
@@ -35,3 +32,6 @@ python main.py
 
 ## Sumbmissions
 Create a submissions file in the `submissions/` directory.
+
+## Sources
+https://www.kaggle.com/yassineghouzam/introduction-to-cnn-keras-0-997-top-6

@@ -9,6 +9,7 @@ from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPool2D
 from keras.optimizers import RMSprop
 from keras.preprocessing.image import ImageDataGenerator
 from keras.callbacks import ReduceLROnPlateau
+from sklearn.metrics import confusion_matrix
 
 # local imports
 from formatter import DataSet, convert_one_hot_vectors_to_digits

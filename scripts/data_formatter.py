@@ -118,10 +118,10 @@ class DataSet:
         if undo_labeling:
             self.convert_digits_to_one_hot_vectors()
 
-    def extract_validation(self, random_seed=2, validation_size=0.1):
+    def extract_validation(self, size=0.1, random_seed=2):
         validation = DataSet()
         validation.filename = self.filename
-        split = train_test_split(self.X, self.Y, test_size=validation_size, random_state=random_seed)
+        split = train_test_split(self.X, self.Y, test_size=size, random_state=random_seed)
         self.X = split[0]
         validation.X = split[1]
         self.Y = split[2]

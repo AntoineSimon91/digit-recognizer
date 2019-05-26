@@ -23,9 +23,9 @@ from keras.callbacks import ReduceLROnPlateau
 
 
 # local imports
-from formatter import DataSet
-from evaluation import plot_loss_and_accuracy
-
+from formatter import DataSet, convert_one_hot_vectors_to_digits
+import evaluation
+from submission import Submission
 
 
 PARENT_DIRPATH = abspath(join(dirname(__file__), pardir))    
@@ -36,14 +36,15 @@ def main():
     # Command line Interface
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--dirpath', default=DATASETS_DIRPATH, help="dataset directory path")
-    parser.add_argument('-n', '--nrows', default=None, type=int, help="number of rows to download")
+    parser.add_argument('-n', '--n_train', default=None, type=int, help="number of rows to download on the train dataset")
+    parser.add_argument('-t', '--n_test', default=None, type=int, help="number of rows to download on the test dataset")
     parser.add_argument('-e', "--epochs", default=1, type=int, help="set the number of epochs")
     parser.add_argument('-b', "--batch_size", default=86, type=int, help="set batch size")
     cli = parser.parse_args()
 
     # Download and clean train dataset
     train = DataSet(dirpath=cli.dirpath, filename="train.csv")
-    train.download(nrows=cli.nrows)
+    train.download(nrows=cli.n_train)
     train.split_X_Y()
     train.normalize()
     train.reshape()
@@ -56,7 +57,7 @@ def main():
 
     # Download clean test dataset
     test = DataSet(dirpath=cli.dirpath, filename="test.csv")
-    test.download(nrows=cli.nrows)
+    test.download(nrows=cli.n_test)
     test.set_X()
     test.normalize()
     test.reshape()
@@ -131,8 +132,28 @@ def main():
         callbacks=[learning_rate_reduction]
     )
 
+    # plot loss and accuracy
+    evaluation.plot_loss_and_accuracy(history)
 
-    plot_loss_and_accuracy(history)
+    # Predict digits for the validation dataset
+    prediction = DataSet()
+    prediction.Y = model.predict(validation.X)
+    prediction.X = validation.X
+
+    prediction.convert_one_hot_vectors_to_digits()
+    validation.convert_one_hot_vectors_to_digits()
+
+    confusion_mtx = confusion_matrix(validation.Y, prediction.Y)
+    evaluation.plot_confusion_matrix(confusion_mtx)
+
+    # Predict results
+    results = model.predict(test.X)
+    results = convert_one_hot_vectors_to_digits(results)
+    print(results)
+
+    # Generate Submission file
+    submission_file = Submission(results)
+    submission_file.save()
 
 
 if __name__ == "__main__":

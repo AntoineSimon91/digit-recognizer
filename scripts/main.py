@@ -12,24 +12,25 @@ def main():
     cli_arguments = cli_parser.parse_args()
     nrows = cli_arguments.nrows
 
-    test = DataSet("test.csv")
-    test.download(nrows=nrows)
-    test.set_X()
-    test.normalize()
-    test.reshape()
-
+    # download and clean train dataset
     train = DataSet("train.csv")
     train.download(nrows=nrows)
     train.split_X_Y()
     train.normalize()
     train.reshape()
     train.convert_digits_to_one_hot_vectors()
-    
-    validation = train.extract_validation(size=0.1)
-
-    
     print(train)
+
+    # split trian/validation datasets
+    validation = train.extract_validation(size=0.1)
     print(validation)
+
+    # download clean test dataset
+    test = DataSet("test.csv")
+    test.download(nrows=nrows)
+    test.set_X()
+    test.normalize()
+    test.reshape()
     print(test)
 
 
